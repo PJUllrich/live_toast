@@ -3,8 +3,7 @@ var LiveMotion = (() => {
   var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
   var __export = (target, all) => {
     __markAsModule(target);
-    for (var name in all)
-      __defProp(target, name, { get: all[name], enumerable: true });
+    for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
   };
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
@@ -22,7 +21,7 @@ var LiveMotion = (() => {
           reject(e);
         }
       };
-      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+      var step = (x) => (x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected));
       step((generator = generator.apply(__this, __arguments)).next());
     });
   };
@@ -30,7 +29,7 @@ var LiveMotion = (() => {
   // js/live_toast/index.ts
   var live_toast_exports = {};
   __export(live_toast_exports, {
-    createLiveToastHook: () => createLiveToastHook
+    createLiveToastHook: () => createLiveToastHook,
   });
 
   // node_modules/@motionone/utils/dist/array.es.js
@@ -47,7 +46,7 @@ var LiveMotion = (() => {
     delay: 0,
     endDelay: 0,
     repeat: 0,
-    easing: "ease"
+    easing: "ease",
   };
 
   // node_modules/@motionone/utils/dist/is-number.es.js
@@ -59,7 +58,7 @@ var LiveMotion = (() => {
   // node_modules/@motionone/utils/dist/wrap.es.js
   var wrap = (min, max, v) => {
     const rangeSize = max - min;
-    return ((v - min) % rangeSize + rangeSize) % rangeSize + min;
+    return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
   };
 
   // node_modules/@motionone/utils/dist/easing.es.js
@@ -71,12 +70,11 @@ var LiveMotion = (() => {
   var mix = (min, max, progress2) => -progress2 * min + progress2 * max + min;
 
   // node_modules/@motionone/utils/dist/noop.es.js
-  var noop = () => {
-  };
+  var noop = () => {};
   var noopReturn = (v) => v;
 
   // node_modules/@motionone/utils/dist/progress.es.js
-  var progress = (min, max, value) => max - min === 0 ? 1 : (value - min) / (max - min);
+  var progress = (min, max, value) => (max - min === 0 ? 1 : (value - min) / (max - min));
 
   // node_modules/@motionone/utils/dist/offset.es.js
   function fillOffset(offset, remaining) {
@@ -100,8 +98,7 @@ var LiveMotion = (() => {
     return (t) => {
       let i = 0;
       for (; i < length - 2; i++) {
-        if (t < input[i + 1])
-          break;
+        if (t < input[i + 1]) break;
       }
       let progressInRange = clamp(0, 1, progress(input[i], input[i + 1], t));
       const segmentEasing = getEasingForSegment(easing, i);
@@ -125,7 +122,7 @@ var LiveMotion = (() => {
   // node_modules/@motionone/utils/dist/time.es.js
   var time = {
     ms: (seconds) => seconds * 1e3,
-    s: (milliseconds) => milliseconds / 1e3
+    s: (milliseconds) => milliseconds / 1e3,
   };
 
   // node_modules/@motionone/easing/dist/cubic-bezier.es.js
@@ -148,35 +145,33 @@ var LiveMotion = (() => {
     return currentT;
   }
   function cubicBezier(mX1, mY1, mX2, mY2) {
-    if (mX1 === mY1 && mX2 === mY2)
-      return noopReturn;
+    if (mX1 === mY1 && mX2 === mY2) return noopReturn;
     const getTForX = (aX) => binarySubdivide(aX, 0, 1, mX1, mX2);
-    return (t) => t === 0 || t === 1 ? t : calcBezier(getTForX(t), mY1, mY2);
+    return (t) => (t === 0 || t === 1 ? t : calcBezier(getTForX(t), mY1, mY2));
   }
 
   // node_modules/@motionone/easing/dist/steps.es.js
-  var steps = (steps2, direction = "end") => (progress2) => {
-    progress2 = direction === "end" ? Math.min(progress2, 0.999) : Math.max(progress2, 1e-3);
-    const expanded = progress2 * steps2;
-    const rounded = direction === "end" ? Math.floor(expanded) : Math.ceil(expanded);
-    return clamp(0, 1, rounded / steps2);
-  };
+  var steps =
+    (steps2, direction = "end") =>
+    (progress2) => {
+      progress2 = direction === "end" ? Math.min(progress2, 0.999) : Math.max(progress2, 1e-3);
+      const expanded = progress2 * steps2;
+      const rounded = direction === "end" ? Math.floor(expanded) : Math.ceil(expanded);
+      return clamp(0, 1, rounded / steps2);
+    };
 
   // node_modules/@motionone/animation/dist/utils/easing.es.js
   var namedEasings = {
     ease: cubicBezier(0.25, 0.1, 0.25, 1),
     "ease-in": cubicBezier(0.42, 0, 1, 1),
     "ease-in-out": cubicBezier(0.42, 0, 0.58, 1),
-    "ease-out": cubicBezier(0, 0, 0.58, 1)
+    "ease-out": cubicBezier(0, 0, 0.58, 1),
   };
   var functionArgsRegex = /\((.*?)\)/;
   function getEasingFunction(definition) {
-    if (isFunction(definition))
-      return definition;
-    if (isCubicBezier(definition))
-      return cubicBezier(...definition);
-    if (namedEasings[definition])
-      return namedEasings[definition];
+    if (isFunction(definition)) return definition;
+    if (isCubicBezier(definition)) return cubicBezier(...definition);
+    if (namedEasings[definition]) return namedEasings[definition];
     if (definition.startsWith("steps")) {
       const args = functionArgsRegex.exec(definition);
       if (args) {
@@ -189,7 +184,20 @@ var LiveMotion = (() => {
 
   // node_modules/@motionone/animation/dist/Animation.es.js
   var Animation = class {
-    constructor(output, keyframes = [0, 1], { easing, duration: initialDuration = defaults.duration, delay = defaults.delay, endDelay = defaults.endDelay, repeat = defaults.repeat, offset, direction = "normal", autoplay = true } = {}) {
+    constructor(
+      output,
+      keyframes = [0, 1],
+      {
+        easing,
+        duration: initialDuration = defaults.duration,
+        delay = defaults.delay,
+        endDelay = defaults.endDelay,
+        repeat = defaults.repeat,
+        offset,
+        direction = "normal",
+        autoplay = true,
+      } = {},
+    ) {
       this.startTime = null;
       this.rate = 1;
       this.t = 0;
@@ -213,7 +221,11 @@ var LiveMotion = (() => {
       this.repeat = repeat;
       this.easing = isEasingList(easing) ? noopReturn : getEasingFunction(easing);
       this.updateDuration(initialDuration);
-      const interpolate$1 = interpolate(keyframes, offset, isEasingList(easing) ? easing.map(getEasingFunction) : noopReturn);
+      const interpolate$1 = interpolate(
+        keyframes,
+        offset,
+        isEasingList(easing) ? easing.map(getEasingFunction) : noopReturn,
+      );
       this.tick = (timestamp) => {
         var _a;
         delay = delay;
@@ -237,13 +249,18 @@ var LiveMotion = (() => {
         }
         iterationProgress === 1 && currentIteration--;
         const iterationIsOdd = currentIteration % 2;
-        if (direction === "reverse" || direction === "alternate" && iterationIsOdd || direction === "alternate-reverse" && !iterationIsOdd) {
+        if (
+          direction === "reverse" ||
+          (direction === "alternate" && iterationIsOdd) ||
+          (direction === "alternate-reverse" && !iterationIsOdd)
+        ) {
           iterationProgress = 1 - iterationProgress;
         }
         const p = t >= this.totalDuration ? 1 : Math.min(iterationProgress, 1);
         const latest = interpolate$1(this.easing(p));
         output(latest);
-        const isAnimationFinished = this.pauseTime === void 0 && (this.playState === "finished" || t >= this.totalDuration + endDelay);
+        const isAnimationFinished =
+          this.pauseTime === void 0 && (this.playState === "finished" || t >= this.totalDuration + endDelay);
         if (isAnimationFinished) {
           this.playState = "finished";
           (_a = this.resolve) === null || _a === void 0 ? void 0 : _a.call(this, latest);
@@ -251,8 +268,7 @@ var LiveMotion = (() => {
           this.frameRequestId = requestAnimationFrame(this.tick);
         }
       };
-      if (autoplay)
-        this.play();
+      if (autoplay) this.play();
     }
     play() {
       const now = performance.now();
@@ -289,8 +305,7 @@ var LiveMotion = (() => {
     reverse() {
       this.rate *= -1;
     }
-    commitStyles() {
-    }
+    commitStyles() {}
     updateDuration(duration) {
       this.duration = duration;
       this.totalDuration = duration * (this.repeat + 1);
@@ -314,17 +329,15 @@ var LiveMotion = (() => {
   };
 
   // node_modules/hey-listen/dist/hey-listen.es.js
-  var warning = function() {
-  };
-  var invariant = function() {
-  };
+  var warning = function () {};
+  var invariant = function () {};
   if (true) {
-    warning = function(check, message) {
+    warning = function (check, message) {
       if (!check && typeof console !== "undefined") {
         console.warn(message);
       }
     };
-    invariant = function(check, message) {
+    invariant = function (check, message) {
       if (!check) {
         throw new Error(message);
       }
@@ -335,8 +348,9 @@ var LiveMotion = (() => {
   var MotionValue = class {
     setAnimation(animation) {
       this.animation = animation;
-      animation === null || animation === void 0 ? void 0 : animation.finished.then(() => this.clearAnimation()).catch(() => {
-      });
+      animation === null || animation === void 0
+        ? void 0
+        : animation.finished.then(() => this.clearAnimation()).catch(() => {});
     }
     clearAnimation() {
       this.animation = this.generator = void 0;
@@ -349,7 +363,7 @@ var LiveMotion = (() => {
     if (!data.has(element)) {
       data.set(element, {
         transforms: [],
-        values: new Map()
+        values: new Map(),
       });
     }
     return data.get(element);
@@ -367,26 +381,26 @@ var LiveMotion = (() => {
   var transformAlias = {
     x: "translateX",
     y: "translateY",
-    z: "translateZ"
+    z: "translateZ",
   };
   var rotation = {
     syntax: "<angle>",
     initialValue: "0deg",
-    toDefaultUnit: (v) => v + "deg"
+    toDefaultUnit: (v) => v + "deg",
   };
   var baseTransformProperties = {
     translate: {
       syntax: "<length-percentage>",
       initialValue: "0px",
-      toDefaultUnit: (v) => v + "px"
+      toDefaultUnit: (v) => v + "px",
     },
     rotate: rotation,
     scale: {
       syntax: "<number>",
       initialValue: 1,
-      toDefaultUnit: noopReturn
+      toDefaultUnit: noopReturn,
     },
-    skew: rotation
+    skew: rotation,
   };
   var transformDefinitions = new Map();
   var asTransformCssVar = (name) => `--motion-${name}`;
@@ -401,21 +415,20 @@ var LiveMotion = (() => {
   var transformLookup = new Set(transforms);
   var isTransform = (name) => transformLookup.has(name);
   var addTransformToElement = (element, name) => {
-    if (transformAlias[name])
-      name = transformAlias[name];
+    if (transformAlias[name]) name = transformAlias[name];
     const { transforms: transforms2 } = getAnimationData(element);
     addUniqueItem(transforms2, name);
     element.style.transform = buildTransformTemplate(transforms2);
   };
-  var buildTransformTemplate = (transforms2) => transforms2.sort(compareTransformOrder).reduce(transformListToString, "").trim();
+  var buildTransformTemplate = (transforms2) =>
+    transforms2.sort(compareTransformOrder).reduce(transformListToString, "").trim();
   var transformListToString = (template, name) => `${template} ${name}(var(${asTransformCssVar(name)}))`;
 
   // node_modules/@motionone/dom/dist/animate/utils/css-var.es.js
   var isCssVar = (name) => name.startsWith("--");
   var registeredProperties = new Set();
   function registerCssVariable(name) {
-    if (registeredProperties.has(name))
-      return;
+    if (registeredProperties.has(name)) return;
     registeredProperties.add(name);
     try {
       const { syntax, initialValue } = transformDefinitions.has(name) ? transformDefinitions.get(name) : {};
@@ -423,10 +436,9 @@ var LiveMotion = (() => {
         name,
         inherits: false,
         syntax,
-        initialValue
+        initialValue,
       });
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   // node_modules/@motionone/dom/dist/animate/utils/feature-detection.es.js
@@ -450,14 +462,13 @@ var LiveMotion = (() => {
         return false;
       }
       return true;
-    }
+    },
   };
   var results = {};
   var supports = {};
   for (const key in featureTests) {
     supports[key] = () => {
-      if (results[key] === void 0)
-        results[key] = featureTests[key]();
+      if (results[key] === void 0) results[key] = featureTests[key]();
       return results[key];
     };
   }
@@ -490,12 +501,11 @@ var LiveMotion = (() => {
     }
     return keyframes;
   }
-  var keyframesList = (keyframes) => Array.isArray(keyframes) ? keyframes : [keyframes];
+  var keyframesList = (keyframes) => (Array.isArray(keyframes) ? keyframes : [keyframes]);
 
   // node_modules/@motionone/dom/dist/animate/utils/get-style-name.es.js
   function getStyleName(key) {
-    if (transformAlias[key])
-      key = transformAlias[key];
+    if (transformAlias[key]) key = transformAlias[key];
     return isTransform(key) ? asTransformCssVar(key) : key;
   }
 
@@ -506,8 +516,7 @@ var LiveMotion = (() => {
       let value = isCssVar(name) ? element.style.getPropertyValue(name) : getComputedStyle(element)[name];
       if (!value && value !== 0) {
         const definition = transformDefinitions.get(name);
-        if (definition)
-          value = definition.initialValue;
+        if (definition) value = definition.initialValue;
       }
       return value;
     },
@@ -518,13 +527,12 @@ var LiveMotion = (() => {
       } else {
         element.style[name] = value;
       }
-    }
+    },
   };
 
   // node_modules/@motionone/dom/dist/animate/utils/stop-animation.es.js
   function stopAnimation(animation, needsCommit = true) {
-    if (!animation || animation.playState === "finished")
-      return;
+    if (!animation || animation.playState === "finished") return;
     try {
       if (animation.stop) {
         animation.stop();
@@ -532,8 +540,7 @@ var LiveMotion = (() => {
         needsCommit && animation.commitStyles();
         animation.cancel();
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   // node_modules/@motionone/dom/dist/animate/utils/get-unit.es.js
@@ -543,8 +550,7 @@ var LiveMotion = (() => {
     const finalKeyframe = keyframes[keyframes.length - 1];
     if (isString(finalKeyframe)) {
       const unit = ((_a = finalKeyframe.match(/(-?[\d.]+)([a-z%]*)/)) === null || _a === void 0 ? void 0 : _a[2]) || "";
-      if (unit)
-        toUnit = (value) => value + unit;
+      if (unit) toUnit = (value) => value + unit;
     }
     return toUnit;
   }
@@ -557,7 +563,18 @@ var LiveMotion = (() => {
     const record = getDevToolsRecord();
     const isRecording = options.record !== false && record;
     let animation;
-    let { duration = defaults.duration, delay = defaults.delay, endDelay = defaults.endDelay, repeat = defaults.repeat, easing = defaults.easing, persist = false, direction, offset, allowWebkitAcceleration = false, autoplay = true } = options;
+    let {
+      duration = defaults.duration,
+      delay = defaults.delay,
+      endDelay = defaults.endDelay,
+      repeat = defaults.repeat,
+      easing = defaults.easing,
+      persist = false,
+      direction,
+      offset,
+      allowWebkitAcceleration = false,
+      autoplay = true,
+    } = options;
     const data2 = getAnimationData(element);
     const valueIsTransform = isTransform(key);
     let canAnimateNatively = supports.waapi();
@@ -565,11 +582,21 @@ var LiveMotion = (() => {
     const name = getStyleName(key);
     const motionValue = getMotionValue(data2.values, name);
     const definition = transformDefinitions.get(name);
-    stopAnimation(motionValue.animation, !(isEasingGenerator(easing) && motionValue.generator) && options.record !== false);
+    stopAnimation(
+      motionValue.animation,
+      !(isEasingGenerator(easing) && motionValue.generator) && options.record !== false,
+    );
     return () => {
       const readInitialValue = () => {
         var _a, _b;
-        return (_b = (_a = style.get(element, name)) !== null && _a !== void 0 ? _a : definition === null || definition === void 0 ? void 0 : definition.initialValue) !== null && _b !== void 0 ? _b : 0;
+        return (_b =
+          (_a = style.get(element, name)) !== null && _a !== void 0
+            ? _a
+            : definition === null || definition === void 0
+              ? void 0
+              : definition.initialValue) !== null && _b !== void 0
+          ? _b
+          : 0;
       };
       let keyframes = hydrateKeyframes(keyframesList(keyframesDefinition), readInitialValue);
       const toUnit = getUnitConverter(keyframes, definition);
@@ -586,12 +613,16 @@ var LiveMotion = (() => {
           canAnimateNatively = false;
         }
       }
-      if (valueIsTransform && !supports.linearEasing() && (isFunction(easing) || isEasingList(easing) && easing.some(isFunction))) {
+      if (
+        valueIsTransform &&
+        !supports.linearEasing() &&
+        (isFunction(easing) || (isEasingList(easing) && easing.some(isFunction)))
+      ) {
         canAnimateNatively = false;
       }
       if (canAnimateNatively) {
         if (definition) {
-          keyframes = keyframes.map((value) => isNumber(value) ? definition.toDefaultUnit(value) : value);
+          keyframes = keyframes.map((value) => (isNumber(value) ? definition.toDefaultUnit(value) : value));
         }
         if (keyframes.length === 1 && (!supports.partialKeyframes() || isRecording)) {
           keyframes.unshift(readInitialValue());
@@ -603,13 +634,16 @@ var LiveMotion = (() => {
           easing: !isEasingList(easing) ? convertEasing(easing, duration) : void 0,
           direction,
           iterations: repeat + 1,
-          fill: "both"
+          fill: "both",
         };
-        animation = element.animate({
-          [name]: keyframes,
-          offset,
-          easing: isEasingList(easing) ? easing.map((thisEasing) => convertEasing(thisEasing, duration)) : void 0
-        }, animationOptions);
+        animation = element.animate(
+          {
+            [name]: keyframes,
+            offset,
+            easing: isEasingList(easing) ? easing.map((thisEasing) => convertEasing(thisEasing, duration)) : void 0,
+          },
+          animationOptions,
+        );
         if (!animation.finished) {
           animation.finished = new Promise((resolve, reject) => {
             animation.onfinish = resolve;
@@ -617,54 +651,66 @@ var LiveMotion = (() => {
           });
         }
         const target = keyframes[keyframes.length - 1];
-        animation.finished.then(() => {
-          if (persist)
-            return;
-          style.set(element, name, target);
-          animation.cancel();
-        }).catch(noop);
-        if (!allowWebkitAcceleration)
-          animation.playbackRate = 1.000001;
+        animation.finished
+          .then(() => {
+            if (persist) return;
+            style.set(element, name, target);
+            animation.cancel();
+          })
+          .catch(noop);
+        if (!allowWebkitAcceleration) animation.playbackRate = 1.000001;
       } else if (AnimationPolyfill && valueIsTransform) {
-        keyframes = keyframes.map((value) => typeof value === "string" ? parseFloat(value) : value);
+        keyframes = keyframes.map((value) => (typeof value === "string" ? parseFloat(value) : value));
         if (keyframes.length === 1) {
           keyframes.unshift(parseFloat(readInitialValue()));
         }
-        animation = new AnimationPolyfill((latest) => {
-          style.set(element, name, toUnit ? toUnit(latest) : latest);
-        }, keyframes, Object.assign(Object.assign({}, options), {
-          duration,
-          easing
-        }));
+        animation = new AnimationPolyfill(
+          (latest) => {
+            style.set(element, name, toUnit ? toUnit(latest) : latest);
+          },
+          keyframes,
+          Object.assign(Object.assign({}, options), {
+            duration,
+            easing,
+          }),
+        );
       } else {
         const target = keyframes[keyframes.length - 1];
         style.set(element, name, definition && isNumber(target) ? definition.toDefaultUnit(target) : target);
       }
       if (isRecording) {
-        record(element, key, keyframes, {
-          duration,
-          delay,
-          easing,
-          repeat,
-          offset
-        }, "motion-one");
+        record(
+          element,
+          key,
+          keyframes,
+          {
+            duration,
+            delay,
+            easing,
+            repeat,
+            offset,
+          },
+          "motion-one",
+        );
       }
       motionValue.setAnimation(animation);
-      if (animation && !autoplay)
-        animation.pause();
+      if (animation && !autoplay) animation.pause();
       return animation;
     };
   }
 
   // node_modules/@motionone/dom/dist/animate/utils/options.es.js
-  var getOptions = (options, key) => options[key] ? Object.assign(Object.assign({}, options), options[key]) : Object.assign({}, options);
+  var getOptions = (options, key) =>
+    options[key] ? Object.assign(Object.assign({}, options), options[key]) : Object.assign({}, options);
 
   // node_modules/@motionone/dom/dist/utils/resolve-elements.es.js
   function resolveElements(elements, selectorCache) {
     var _a;
     if (typeof elements === "string") {
       if (selectorCache) {
-        (_a = selectorCache[elements]) !== null && _a !== void 0 ? _a : selectorCache[elements] = document.querySelectorAll(elements);
+        (_a = selectorCache[elements]) !== null && _a !== void 0
+          ? _a
+          : (selectorCache[elements] = document.querySelectorAll(elements));
         elements = selectorCache[elements];
       } else {
         elements = document.querySelectorAll(elements);
@@ -678,11 +724,14 @@ var LiveMotion = (() => {
   // node_modules/@motionone/dom/dist/animate/utils/controls.es.js
   var createAnimation = (factory) => factory();
   var withControls = (animationFactory, options, duration = defaults.duration) => {
-    return new Proxy({
-      animations: animationFactory.map(createAnimation).filter(Boolean),
-      duration,
-      options
-    }, controls);
+    return new Proxy(
+      {
+        animations: animationFactory.map(createAnimation).filter(Boolean),
+        duration,
+        options,
+      },
+      controls,
+    );
   };
   var getActiveAnimation = (state) => state.animations[0];
   var controls = {
@@ -710,7 +759,10 @@ var LiveMotion = (() => {
             target.animations.forEach((animation) => callback(animation, target));
           };
         default:
-          return typeof (activeAnimation === null || activeAnimation === void 0 ? void 0 : activeAnimation[key]) === "undefined" ? void 0 : () => target.animations.forEach((animation) => animation[key]());
+          return typeof (activeAnimation === null || activeAnimation === void 0 ? void 0 : activeAnimation[key]) ===
+            "undefined"
+            ? void 0
+            : () => target.animations.forEach((animation) => animation[key]());
       }
     },
     set: (target, key, value) => {
@@ -724,7 +776,7 @@ var LiveMotion = (() => {
           return true;
       }
       return false;
-    }
+    },
   };
   var selectFinished = (animation) => animation.finished;
 
@@ -759,14 +811,17 @@ var LiveMotion = (() => {
 
   // node_modules/motion/dist/animate.es.js
   function animateProgress(target, options = {}) {
-    return withControls([
-      () => {
-        const animation = new Animation(target, [0, 1], options);
-        animation.finished.catch(() => {
-        });
-        return animation;
-      }
-    ], options, options.duration);
+    return withControls(
+      [
+        () => {
+          const animation = new Animation(target, [0, 1], options);
+          animation.finished.catch(() => {});
+          return animation;
+        },
+      ],
+      options,
+      options.duration,
+    );
   }
   function animate2(target, keyframesOrOptions, options) {
     const factory = isFunction(target) ? animateProgress : animate;
@@ -779,9 +834,6 @@ var LiveMotion = (() => {
       return true;
     }
     return el.offsetParent === null;
-  }
-  function isFlash(el) {
-    return el.dataset.component === "flash";
   }
   function flashCount() {
     let num = 0;
@@ -806,13 +858,16 @@ var LiveMotion = (() => {
   var lastTS = [];
   function doAnimations(delayTime, maxItems, elToRemove) {
     const ts = [];
-    let toasts = Array.from(document.querySelectorAll('#toast-group [phx-hook="LiveToast"]')).map((t) => {
-      if (isHidden(t)) {
-        return null;
-      } else {
-        return t;
-      }
-    }).filter(Boolean).reverse();
+    let toasts = Array.from(document.querySelectorAll('#toast-group [phx-hook="LiveToast"]'))
+      .map((t) => {
+        if (isHidden(t)) {
+          return null;
+        } else {
+          return t;
+        }
+      })
+      .filter(Boolean)
+      .reverse();
     if (elToRemove) {
       toasts = toasts.filter((t) => t !== elToRemove);
     }
@@ -852,7 +907,7 @@ var LiveMotion = (() => {
       const duration = animationTime / 1e3;
       animate2(toast, keyframes, {
         duration,
-        easing: [0.22, 1, 0.36, 1]
+        easing: [0.22, 1, 0.36, 1],
       });
       toast.order += 1;
       toast.style.zIndex = (50 - toast.order).toString();
@@ -871,14 +926,18 @@ var LiveMotion = (() => {
       if (this.el.dataset.corner === "bottom_left" || this.el.dataset.corner === "bottom_right") {
         direction = "-";
       }
-      const animation = animate2(this.el, { y: `${direction}${val}%`, opacity: 0 }, {
-        opacity: {
-          duration: 0.2,
-          easing: "ease-out"
+      const animation = animate2(
+        this.el,
+        { y: `${direction}${val}%`, opacity: 0 },
+        {
+          opacity: {
+            duration: 0.2,
+            easing: "ease-out",
+          },
+          duration: 0.3,
+          easing: "ease-out",
         },
-        duration: 0.3,
-        easing: "ease-out"
-      });
+      );
       yield animation.finished;
     });
   }
@@ -899,28 +958,31 @@ var LiveMotion = (() => {
         }
         window.addEventListener("phx:clear-flash", (e) => {
           this.pushEvent("lv:clear-flash", {
-            key: e.detail.key
+            key: e.detail.key,
           });
         });
-        window.addEventListener("flash-leave", (event) => __async(this, null, function* () {
-          if (event.target === this.el) {
-            doAnimations.bind(this, duration, maxItems, this.el)();
-            yield animateOut.bind(this)();
-          }
-        }));
+        window.addEventListener("flash-leave", (event) =>
+          __async(this, null, function* () {
+            if (event.target === this.el) {
+              doAnimations.bind(this, duration, maxItems, this.el)();
+              yield animateOut.bind(this)();
+            }
+          }),
+        );
         doAnimations.bind(this)(duration, maxItems);
-        if (isFlash(this.el)) {
-          return;
-        }
         let durationOverride = duration;
         if (this.el.dataset.duration !== void 0) {
           durationOverride = Number.parseInt(this.el.dataset.duration);
         }
-        window.setTimeout(() => __async(this, null, function* () {
-          yield animateOut.bind(this)();
-          this.pushEventTo("#toast-group", "clear", { id: this.el.id });
-        }), durationOverride + removalTime);
-      }
+        window.setTimeout(
+          () =>
+            __async(this, null, function* () {
+              yield animateOut.bind(this)();
+              this.pushEventTo("#toast-group", "clear", { id: this.el.id });
+            }),
+          durationOverride + removalTime,
+        );
+      },
     };
   }
   return live_toast_exports;

@@ -114,6 +114,11 @@ defmodule LiveToast.Components do
     doc: "the corner to display the toasts"
   )
 
+  attr(:duration, :integer,
+    default: 6000,
+    doc: "the time in milliseconds before the message is automatically dismissed"
+  )
+
   attr(:toast_class_fn, :any,
     default: &LiveToast.toast_class_fn/1,
     doc: "function to override the toast classes"
@@ -129,7 +134,7 @@ defmodule LiveToast.Components do
       data-component="flash"
       corner={@corner}
       toast_class_fn={@toast_class_fn}
-      duration={0}
+      duration={@duration}
       kind={level}
       title={String.capitalize(to_string(level))}
       phx-update="ignore"
